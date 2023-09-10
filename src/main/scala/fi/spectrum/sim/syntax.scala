@@ -1,6 +1,7 @@
 package fi.spectrum.sim
 
 import fi.spectrum.sim.runtime.NonRunnable
+import scorex.crypto.encode.Base16
 import scorex.crypto.hash.Blake2b256
 
 import scala.util.Try
@@ -44,6 +45,10 @@ object syntax {
   def allOf(coll: Coll[Boolean]): Boolean = !coll.inner.contains(false)
 
   def blake2b256(xs: Coll[Byte]): Coll[Byte] = Blake2b256.hash(xs.inner.toArray).toVector
+
+  def log(x: Any): Unit = println(x)
+
+  def fromBase16(arg: String): Coll[Byte] = Base16.decode(arg).get.toVector
 
   def getVar[T](i: Byte)(implicit ctx: RuntimeCtx): Option[T] =
     ctx.vars.get(i.toInt).flatMap(a => Try(a.asInstanceOf[T]).toOption)

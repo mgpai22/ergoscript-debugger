@@ -32,6 +32,7 @@ object RuntimeSetup extends JsonCodecs {
     selfInputIx: Int,
     height: Int
   )(implicit fromBox: TryFromBox[Box, Ledger]): Option[RuntimeSetup[Box]] = {
+    println(selfInputIx)
     val (selfIn, ext) = inputs(selfInputIx)
     for {
       selfBox <- fromBox.tryFromBox(selfIn)
@@ -54,7 +55,7 @@ object RuntimeSetup extends JsonCodecs {
   }
 
   private def pullBox(id: BoxId): Option[ErgoBox] = basicRequest
-    .post(uri"https://gql.ergoplatform.com/")
+    .post(uri"https://tn-ergo-explorer.anetabtc.io/graphql")
     .body(bodyJson(id))
     .response(asJson[Data])
     .send(backend)
